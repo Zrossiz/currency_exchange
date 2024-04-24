@@ -20,8 +20,6 @@ CREATE TABLE currencies (
     sign VARCHAR
 );
 
-
-
 CREATE TABLE exchange_rates (
     id INTEGER PRIMARY KEY,
     base_currency_id INTEGER REFERENCES currencies (id),
