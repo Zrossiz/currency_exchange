@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-class DB:
+class Db:
     def connect_to_db(self):
         db_name = os.getenv('DB_NAME')
         db_user = os.getenv('USER')
@@ -34,6 +34,20 @@ class DB:
         '''
 
         cur.execute(create_table_query)
+        conn.commit()
+        cur.close()
+        conn.close()
+
+    def create_currency(self, code, full_name, sign):
+        conn = self.connect_to_db()
+        cur = conn.cursor()
+
+        create_currency_query = f'''
+            INSERT INTO currencies (code, full_name, sign)
+            VALUES (%s, %s, %s)
+        '''
+
+        cur.execute(create_currency_query, (code, full_name, sign))
         conn.commit()
         cur.close()
         conn.close()
