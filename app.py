@@ -1,5 +1,5 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
-import json
+import psycopg2
 
 
 class HTTPRequestHandler(BaseHTTPRequestHandler):
@@ -7,7 +7,7 @@ class HTTPRequestHandler(BaseHTTPRequestHandler):
         self.send_header('Content-type', 'application/json')
         self.end_headers()
 
-    def do_GET(self):
+    def do_post(self):
         self.send_response(200)
         self.send_header('Content-type', 'text/html')
         self.end_headers()
