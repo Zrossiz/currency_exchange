@@ -1,6 +1,6 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from Db import Db
 import json
+from controllers.Currency import CurrencyController
 
 
 class HTTPRequestHandler(BaseHTTPRequestHandler):
@@ -10,26 +10,12 @@ class HTTPRequestHandler(BaseHTTPRequestHandler):
         post_data = self.rfile.read(content_length)
         data = json.loads(post_data.decode('utf-8'))
 
-        code = data["code"]
-        name = data["name"]
-        sign = data["sign"]
+        new_currency = CurrencyController().create(data)
 
-        Db().create_currency(code, name, sign)
-
-        response_data = {
-            "success": "true",
-            "data": {
-                "code": code,
-                "name": name,
-                "sign": sign
-            }
-        }
-
-        response_json = json.dumps(response_data)
         self.send_response(200)
         self.send_header('Content-type', 'application/json')
         self.end_headers()
-        self.wfile.write(response_json.encode('utf-8'))
+        self.wfile.write(new_currency.encode('utf-8'))
 
 
 def run(server_class=HTTPServer, handler_class=HTTPRequestHandler, port=8000):
