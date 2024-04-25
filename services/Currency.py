@@ -18,6 +18,19 @@ class CurrencyService:
         return response_data
 
 
+    def get_currency_by_slug(self, slug):
+        currency = CurrencyModel().get_by_slug(slug)
+        if len(currency) >= 1:
+            response_data = {
+                "id": currency[0],
+                "name": currency[1],
+                "code": currency[2],
+                "sign": currency[3]
+            }
+
+            return response_data
+
+
     def get_all(self):
         currencies_sql_arr = CurrencyModel().get_all()
 

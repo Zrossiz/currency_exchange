@@ -17,3 +17,9 @@ class CurrencyController:
         currencies = CurrencyService().get_all()
         response_json = json.dumps(currencies)
         return response_json
+
+
+    def get_currency_by_slug(self, slug):
+        currency = CurrencyService().get_currency_by_slug(slug)
+        response_json = json.dumps(currency)
+        return response_json

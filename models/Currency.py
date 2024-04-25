@@ -19,6 +19,20 @@ class CurrencyModel:
 
         return currencies
 
+    def get_by_slug(self, slug):
+        conn = Db().connect_to_db()
+        cur = conn.cursor()
+        get_currency_query = f'''
+            SELECT id, full_name, code, sign FROM currencies WHERE code = %s
+        '''
+
+        cur.execute(get_currency_query, (slug,))
+        currency = cur.fetchone()
+        cur.close()
+        conn.close()
+
+        return currency
+
     def create_currency(self, code, full_name, sign):
         conn = Db().connect_to_db()
         cur = conn.cursor()

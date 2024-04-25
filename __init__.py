@@ -15,6 +15,13 @@ class HTTPRequestHandler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(currencies.encode('utf-8'))
 
+        if self.path.startswith('/api/currency/'):
+            slug = self.path.split('/')[-1].lower()
+            currency = CurrencyController().get_currency_by_slug(slug)
+            self.send_response(200)
+            self.send_header('Content-type', 'application/json')
+            self.end_headers()
+            self.wfile.write(currency.encode('utf-8'))
 
     def do_POST(self):
         if (self.path == '/api/currency'):
@@ -24,7 +31,7 @@ class HTTPRequestHandler(BaseHTTPRequestHandler):
 
             new_currency = CurrencyController().create(data)
 
-            self.send_response(200)
+            self.send_response(201)
             self.send_header('Content-type', 'application/json')
             self.end_headers()
             self.wfile.write(new_currency.encode('utf-8'))
@@ -36,7 +43,7 @@ class HTTPRequestHandler(BaseHTTPRequestHandler):
 
             new_pair = ExchangeRatesController().create(data)
 
-            self.send_response(200)
+            self.send_response(201)
             self.send_header('Content-type', 'application/json')
             self.end_headers()
             self.wfile.write(new_pair.encode('utf-8'))
