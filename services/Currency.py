@@ -16,3 +16,23 @@ class CurrencyService:
         }
 
         return response_data
+
+
+    def get_all(self):
+        currencies_sql_arr = CurrencyModel().get_all()
+
+        formatted_sql = []
+
+        for i in range(len(currencies_sql_arr)):
+            current_currency = currencies_sql_arr[i]
+
+            currency_object = {
+                "id": current_currency[0],
+                "name": current_currency[1],
+                "code": current_currency[2],
+                "sign": current_currency[3]
+            }
+
+            formatted_sql.append(currency_object)
+
+        return formatted_sql

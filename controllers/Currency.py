@@ -12,3 +12,8 @@ class CurrencyController:
 
         response_json = json.dumps(new_currency)
         return response_json
+
+    def get_all(self):
+        currencies = CurrencyService().get_all()
+        response_json = json.dumps(currencies)
+        return response_json

@@ -3,6 +3,22 @@ from Db import Db
 
 class CurrencyModel:
 
+    def get_all(self):
+        conn = Db().connect_to_db()
+        cur = conn.cursor()
+
+        get_all_currencies = '''
+            SELECT id, full_name, code, sign FROM currencies
+        '''
+
+        cur.execute(get_all_currencies)
+        currencies = cur.fetchall()
+
+        cur.close()
+        conn.close()
+
+        return currencies
+
     def create_currency(self, code, full_name, sign):
         conn = Db().connect_to_db()
         cur = conn.cursor()

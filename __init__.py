@@ -6,6 +6,16 @@ from controllers.ExchangeRates import ExchangeRatesController
 
 class HTTPRequestHandler(BaseHTTPRequestHandler):
 
+    def do_GET(self):
+        if (self.path == '/api/currency'):
+            currencies = CurrencyController().get_all()
+
+            self.send_response(200)
+            self.send_header('Content-type', 'application/json')
+            self.end_headers()
+            self.wfile.write(currencies.encode('utf-8'))
+
+
     def do_POST(self):
         if (self.path == '/api/currency'):
             content_length = int(self.headers['Content-Length'])
