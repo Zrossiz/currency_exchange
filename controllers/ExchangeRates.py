@@ -5,6 +5,23 @@ import json
 class ExchangeRatesController:
 
     def create(self, data):
+
+        if not "baseCurrencyCode" in data:
+            return json.dumps({
+                "success": "false",
+                "data": "indicate the currency baseCurrencyCode"
+            })
+        if not "targetCurrencyCode" in data:
+            return json.dumps({
+                "success": "false",
+                "data": "indicate the currency targetCurrencyCode"
+            })
+        if not "rate" in data:
+            return json.dumps({
+                "success": "false",
+                "data": "indicate the currency rate"
+            })
+
         base_currency_code = data["baseCurrencyCode"]
         target_currency_code = data["targetCurrencyCode"]
         rate = data["rate"]

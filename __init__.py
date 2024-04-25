@@ -36,7 +36,10 @@ class HTTPRequestHandler(BaseHTTPRequestHandler):
 
             new_currency = CurrencyController().create(data)
 
-            self.send_response(201)
+            if 'data' in new_currency:
+                self.send_response(400)
+            else:
+                self.send_response(200)
             self.send_header('Content-type', 'application/json')
             self.end_headers()
             self.wfile.write(new_currency.encode('utf-8'))
@@ -48,7 +51,10 @@ class HTTPRequestHandler(BaseHTTPRequestHandler):
 
             new_pair = ExchangeRatesController().create(data)
 
-            self.send_response(201)
+            if 'data' in new_pair:
+                self.send_response(400)
+            else:
+                self.send_response(200)
             self.send_header('Content-type', 'application/json')
             self.end_headers()
             self.wfile.write(new_pair.encode('utf-8'))
