@@ -9,8 +9,10 @@ class HTTPRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         if (self.path == '/api/currency'):
             currencies = CurrencyController().get_all()
-
-            self.send_response(200)
+            if 'data' in currencies:
+                self.send_response(404)
+            else:
+                self.send_response(200)
             self.send_header('Content-type', 'application/json')
             self.end_headers()
             self.wfile.write(currencies.encode('utf-8'))

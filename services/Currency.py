@@ -54,4 +54,11 @@ class CurrencyService:
 
             formatted_sql.append(currency_object)
 
-        return formatted_sql
+        if len(formatted_sql) >= 1:
+            return formatted_sql
+        else:
+            response_data = {
+                "success": "false",
+                "data": "not found"
+            }
+            return response_data
