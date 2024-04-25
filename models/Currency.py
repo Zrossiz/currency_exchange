@@ -7,10 +7,6 @@ class CurrencyModel:
         conn = Db().connect_to_db()
         cur = conn.cursor()
 
-        print('Code: ', code)
-        print('Full name: ', full_name)
-        print('Sign: ', sign)
-
         create_currency_query = f'''
             INSERT INTO currencies (code, full_name, sign)
             VALUES (%s, %s, %s)

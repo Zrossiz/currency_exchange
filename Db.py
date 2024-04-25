@@ -18,22 +18,24 @@ class Db:
         cur = conn.cursor()
 
         create_table_query = '''
-        CREATE TABLE currencies (
-            id SERIAL PRIMARY KEY,
-            code VARCHAR,
-            full_name VARCHAR,
-            sign VARCHAR
-        );
+            CREATE TABLE currencies (
+                id SERIAL PRIMARY KEY,
+                code VARCHAR,   
+                full_name VARCHAR,
+                sign VARCHAR
+            );
         
-        CREATE TABLE exchange_rates (
-            id INTEGER PRIMARY KEY,
-            base_currency_id INTEGER REFERENCES currencies (id),
-            target_currency_id INTEGER REFERENCES currencies (id),
-            Rate DECIMAL(6)
-        );
+            CREATE TABLE exchange_rates (
+                id SERIAL PRIMARY KEY,
+                base_currency_id INTEGER REFERENCES currencies (id),
+                target_currency_id INTEGER REFERENCES currencies (id),
+                rate DECIMAL(10, 6)
+            );
         '''
 
         cur.execute(create_table_query)
         conn.commit()
         cur.close()
         conn.close()
+
+#Db().create_tables(Db().connect_to_db())
