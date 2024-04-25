@@ -18,7 +18,10 @@ class HTTPRequestHandler(BaseHTTPRequestHandler):
         if self.path.startswith('/api/currency/'):
             slug = self.path.split('/')[-1].lower()
             currency = CurrencyController().get_currency_by_slug(slug)
-            self.send_response(200)
+            if 'data' in currency:
+                self.send_response(404)
+            else:
+                self.send_response(200)
             self.send_header('Content-type', 'application/json')
             self.end_headers()
             self.wfile.write(currency.encode('utf-8'))

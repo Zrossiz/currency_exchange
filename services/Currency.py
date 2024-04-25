@@ -20,7 +20,7 @@ class CurrencyService:
 
     def get_currency_by_slug(self, slug):
         currency = CurrencyModel().get_by_slug(slug)
-        if len(currency) >= 1:
+        if currency:
             response_data = {
                 "id": currency[0],
                 "name": currency[1],
@@ -28,6 +28,12 @@ class CurrencyService:
                 "sign": currency[3]
             }
 
+            return response_data
+        else:
+            response_data = {
+                "success": "false",
+                "data": "not found"
+            }
             return response_data
 
 
