@@ -25,6 +25,5 @@ Python проект с использованием crud операций чер
 
 
 TODO:
-- GET /exchangeRates/USDRUB
-- PATCH /exchangeRates/USDRUB 
 - GET /exchange?from=BASE_CURRENCY_CODE&to=TARGET_CURRENCY_CODE&amount=$AMOUNT
+- Обработать ошибки

@@ -78,3 +78,30 @@ class ExchangeRatesModule:
         cur.close()
         conn.close()
         return pairs
+
+    def update_by_slug(self, base, target, rate):
+        conn = Db().connect_to_db()
+        cur = conn.cursor()
+        update_pairs_by_slug_query = '''
+            UPDATE exchange_rates
+            SET rate = %s
+            WHERE base_currency_id = (
+                SELECT id
+                FROM currencies
+                WHERE code = %s
+            )
+            AND target_currency_id = (
+                SELECT id
+                FROM currencies
+                WHERE code = %s
+            );
+        '''
+
+        cur.execute(update_pairs_by_slug_query, (rate, base, target))
+        conn.commit()
+
+        cur.close()
+        conn.close()
+
+        pair = self.get_by_slug(base, target)
+        return pair

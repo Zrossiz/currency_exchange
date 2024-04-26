@@ -112,6 +112,18 @@ class HTTPRequestHandler(BaseHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write(json.dumps({"error": str(e)}).encode('utf-8'))
 
+    def do_PATCH(self):
+        if self.path.startswith('/api/exchange-rates/'):
+            content_length = int(self.headers['Content-Length'])
+            post_data = self.rfile.read(content_length)
+            data = json.loads(post_data.decode('utf-8'))
+            slug = self.path.split('/')[-1].lower()
+            pair = ExchangeRatesController().update_by_slug(slug, data)
+            self.send_response(200)
+            self.send_header('Content-type', 'application/json')
+            self.end_headers()
+            self.wfile.write(pair.encode('utf-8'))
+
 
 def run(server_class=HTTPServer, handler_class=HTTPRequestHandler, port=8000):
     server_address = ('', port)
