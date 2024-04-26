@@ -69,3 +69,24 @@ class ExchangeRatesService:
         conn.close()
 
         return currency_sql
+    
+    def get_by_slug(self, base, target):
+        pair  = ExchangeRatesModule().get_by_slug(base, target)[0]
+        formatted_pair = {
+            "id": pair[0],
+            "baseCurrency": {
+                "id": pair[1],
+                "name": pair[3],
+                "code": pair[2],
+                "sign": pair[4],
+            },
+            "targetCurrency": {
+                "id": pair[5],
+                "name": pair[7],
+                "code": pair[6],
+                "sign": pair[8],
+            },
+            "rate": float(pair[9]),
+        }
+
+        return formatted_pair

@@ -40,3 +40,10 @@ class ExchangeRatesController:
             return json.dumps(response_json)
         response_json = json.dumps(exchange_pairs)
         return response_json
+
+    def get_by_slug(self, slug):
+        base_currency = slug[:3]
+        target_currency = slug[3:]
+        pair = ExchangeRatesService().get_by_slug(base=base_currency, target=target_currency)
+        response_json = json.dumps(pair)
+        return response_json

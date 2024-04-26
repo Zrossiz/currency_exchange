@@ -57,6 +57,15 @@ class HTTPRequestHandler(BaseHTTPRequestHandler):
                 self.send_header('Content-type', 'application/json')
                 self.end_headers()
                 self.wfile.write(json.dumps({"error": str(e)}).encode('utf-8'))
+        
+        if self.path.startswith('/api/exchange-rates/'):
+            slug = self.path.split('/')[-1].lower()
+            pair = ExchangeRatesController().get_by_slug(slug)
+            self.send_response(200)
+            self.send_header('Content-type', 'application/json')
+            self.end_headers()
+            self.wfile.write(pair.encode('utf-8'))
+
 
     def do_POST(self):
         if (self.path == '/api/currency'):
