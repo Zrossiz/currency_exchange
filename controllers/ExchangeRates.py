@@ -55,3 +55,7 @@ class ExchangeRatesController:
         pair = ExchangeRatesService().update_by_slug(base=base_currency, target=target_currency, rate=rate)
         response_json = json.dumps(pair)
         return response_json
+    
+
+    def exchange(self, from_currency, to_currency, amount):
+        result = ExchangeRatesService().exchange(from_currency, to_currency, amount)

@@ -2,6 +2,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from controllers.Currency import CurrencyController
 from controllers.ExchangeRates import ExchangeRatesController
+from urllib.parse import urlparse, parse_qs
 
 
 class HTTPRequestHandler(BaseHTTPRequestHandler):
@@ -65,6 +66,21 @@ class HTTPRequestHandler(BaseHTTPRequestHandler):
             self.send_header('Content-type', 'application/json')
             self.end_headers()
             self.wfile.write(pair.encode('utf-8'))
+
+        if (self.path.startswith('/api/exchange')):
+            try:
+                parsed_url = urlparse(self.path)
+                query_params = parse_qs(parsed_url.query)
+
+                from_currency = query_params['from'][0]
+                to_currency = query_params['to'][0]
+                amount = query_params['amount'][0]
+                
+            except Exception as e:
+                self.send_response(500)
+                self.send_header('Content-type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({"error": str(e)}).encode('utf-8'))
 
 
     def do_POST(self):

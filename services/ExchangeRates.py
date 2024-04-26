@@ -112,3 +112,6 @@ class ExchangeRatesService:
         }
 
         return formatted_pair
+    
+    def exchange(self, from_currency, to_currency, amount):
+        pass
