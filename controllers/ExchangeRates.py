@@ -32,5 +32,11 @@ class ExchangeRatesController:
 
     def get_all(self):
         exchange_pairs = ExchangeRatesService().get_all()
+        if len(exchange_pairs) == 0:
+            response_json = {
+                "success": "false",
+                "data": "not found"
+            }
+            return json.dumps(response_json)
         response_json = json.dumps(exchange_pairs)
         return response_json

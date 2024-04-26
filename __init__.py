@@ -26,7 +26,10 @@ class HTTPRequestHandler(BaseHTTPRequestHandler):
         if (self.path == '/api/exchange-rates'):
             try:
                 exchange_pairs = ExchangeRatesController().get_all()
-                self.send_response(200)
+                if 'data' in exchange_pairs:
+                    self.send_response(404)
+                else:
+                    self.send_response(200)
                 self.send_header('Content-type', 'application/json')
                 self.end_headers()
                 self.wfile.write(exchange_pairs.encode('utf-8'))
