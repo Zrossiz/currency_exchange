@@ -1,6 +1,5 @@
 from models.ExchangeRates import ExchangeRatesModule
 from Db import Db
-from decimal import Decimal
 
 
 class ExchangeRatesService:

@@ -25,5 +25,5 @@ Python проект с использованием crud операций чер
 
 
 TODO:
-- GET /exchange?from=BASE_CURRENCY_CODE&to=TARGET_CURRENCY_CODE&amount=$AMOUNT
+- GET /exchange?from=usd&to=eur&amount=10
 - Обработать ошибки
