@@ -1,9 +1,30 @@
 from models.Currency import CurrencyModel
+from Db import Db
 
 
 class CurrencyService:
 
     def create_currency(self, code, full_name, sign):
+
+        conn = Db().connect_to_db()
+        cur = conn.cursor()
+
+        find_currency_query = '''
+            SELECT * FROM currencies 
+            WHERE code = %s
+        '''
+
+        cur.execute(find_currency_query, (code,))
+        currency = cur.fetchone()
+        cur.close()
+        conn.close()
+
+        if currency:
+            return {
+                "success": "false",
+                "data": "currency already exist"
+            }
+
         CurrencyModel().create_currency(code, full_name, sign)
 
         response_data = {

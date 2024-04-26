@@ -50,8 +50,11 @@ class HTTPRequestHandler(BaseHTTPRequestHandler):
                 data = json.loads(post_data.decode('utf-8'))
 
                 new_currency = CurrencyController().create(data)
-
-                if 'data' in new_currency:
+                data_message = json.loads(new_currency).get("data")
+                print(data_message)
+                if data_message == 'currency already exist':
+                    self.send_response(409)
+                elif data_message.startswith('indicate the'):
                     self.send_response(400)
                 else:
                     self.send_response(200)
