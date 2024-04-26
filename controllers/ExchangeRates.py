@@ -29,3 +29,8 @@ class ExchangeRatesController:
 
         response_json = json.dumps(new_pair)
         return response_json
+
+    def get_all(self):
+        exchange_pairs = ExchangeRatesService().get_all()
+        response_json = json.dumps(exchange_pairs)
+        return response_json

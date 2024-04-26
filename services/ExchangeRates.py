@@ -1,5 +1,6 @@
 from models.ExchangeRates import ExchangeRatesModule
 from Db import Db
+from decimal import Decimal
 
 
 class ExchangeRatesService:
@@ -17,17 +18,40 @@ class ExchangeRatesService:
                 "id": base_currency[0],
                 "name": base_currency[2],
                 "code": base_currency[1],
-                "sign": base_currency[3]
+                "sign": base_currency[3],
             },
             "targetCurrency": {
                 "id": target_currency[0],
                 "name": target_currency[2],
                 "code": target_currency[1],
-                "sign": target_currency[3]
+                "sign": target_currency[3],
             },
             "rate": rate
         }
 
+        return response_data
+    
+    def get_all(self):
+        currencies = ExchangeRatesModule().get_all()
+        response_data = []
+        for pair in currencies:
+            formatted_pair = {
+                "id": pair[0],
+                "baseCurrency": {
+                    "id": pair[1],
+                    "name": pair[3],
+                    "code": pair[2],
+                    "sign": pair[4],
+                },
+                "targetCurrency": {
+                    "id": pair[5],
+                    "name": pair[7],
+                    "code": pair[6],
+                    "sign": pair[8],
+                },
+                "rate": float(pair[9]),
+            }
+            response_data.append(formatted_pair)
         return response_data
 
     def _find_currencies_by_code(self, code):

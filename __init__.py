@@ -22,6 +22,19 @@ class HTTPRequestHandler(BaseHTTPRequestHandler):
                 self.send_header('Content-type', 'application/json')
                 self.end_headers()
                 self.wfile.write(json.dumps({"error": str(e)}).encode('utf-8'))
+        
+        if (self.path == '/api/exchange-rates'):
+            try:
+                exchange_pairs = ExchangeRatesController().get_all()
+                self.send_response(200)
+                self.send_header('Content-type', 'application/json')
+                self.end_headers()
+                self.wfile.write(exchange_pairs.encode('utf-8'))
+            except Exception as e:
+                self.send_response(500)
+                self.send_header('Content-type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({"error": str(e)}).encode('utf-8'))
 
         if self.path.startswith('/api/currency/'):
             try:
@@ -51,7 +64,6 @@ class HTTPRequestHandler(BaseHTTPRequestHandler):
 
                 new_currency = CurrencyController().create(data)
                 data_message = json.loads(new_currency).get("data")
-                print(data_message)
                 if data_message == 'currency already exist':
                     self.send_response(409)
                 elif data_message.startswith('indicate the'):
