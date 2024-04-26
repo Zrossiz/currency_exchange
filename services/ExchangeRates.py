@@ -1,4 +1,4 @@
-from models.ExchangeRates import ExchangeRatesModule
+from models.ExchangeRates import ExchangeRatesModel
 from Db import Db
 
 
@@ -8,7 +8,7 @@ class ExchangeRatesService:
         base_currency = self._find_currencies_by_code(base_currency_code)[0]
         target_currency = self._find_currencies_by_code(target_currency_code)[0]
 
-        new_currency_pair_id = ExchangeRatesModule().create(
+        new_currency_pair_id = ExchangeRatesModel().create(
             base_currency[0], target_currency[0], rate)
 
         response_data = {
@@ -31,7 +31,7 @@ class ExchangeRatesService:
         return response_data
     
     def get_all(self):
-        currencies = ExchangeRatesModule().get_all()
+        currencies = ExchangeRatesModel().get_all()
         response_data = []
         for pair in currencies:
             formatted_pair = {
@@ -70,7 +70,7 @@ class ExchangeRatesService:
         return currency_sql
     
     def get_by_slug(self, base, target):
-        pair = ExchangeRatesModule().get_by_slug(base, target)[0]
+        pair = ExchangeRatesModel().get_by_slug(base, target)[0]
         formatted_pair = {
             "id": pair[0],
             "baseCurrency": {
@@ -91,7 +91,7 @@ class ExchangeRatesService:
         return formatted_pair
     
     def update_by_slug(self, base, target, rate):
-        pair = ExchangeRatesModule().update_by_slug(base, target, rate)[0]
+        pair = ExchangeRatesModel().update_by_slug(base, target, rate)[0]
 
         formatted_pair = {
             "id": pair[0],

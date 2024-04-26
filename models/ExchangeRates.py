@@ -1,7 +1,7 @@
 from Db import Db
 
 
-class ExchangeRatesModule:
+class ExchangeRatesModel:
 
     def create(self, base_currency_id, target_currency_id, rate):
         conn = Db().connect_to_db()

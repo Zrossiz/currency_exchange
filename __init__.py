@@ -33,7 +33,7 @@ class HTTPRequestHandler(BaseHTTPRequestHandler):
                     self.send_response(200)
                 self.send_header('Content-type', 'application/json')
                 self.end_headers()
-                self.wfile.write(exchange_pairs.encode('utf-8'))
+                return self.wfile.write(exchange_pairs.encode('utf-8'))
             except Exception as e:
                 self.send_response(500)
                 self.send_header('Content-type', 'application/json')
@@ -73,20 +73,22 @@ class HTTPRequestHandler(BaseHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write(json.dumps({"error": str(e)}).encode('utf-8'))
 
-        if (self.path.startswith('/api/exchange')):
-            try:
-                parsed_url = urlparse(self.path)
-                query_params = parse_qs(parsed_url.query)
+        # if (self.path.startswith('/api/exchange')):
+        #     try:
+        #         parsed_url = urlparse(self.path)
+        #         query_params = parse_qs(parsed_url.query)
 
-                from_currency = query_params['from'][0]
-                to_currency = query_params['to'][0]
-                amount = query_params['amount'][0]
+        #         from_currency = query_params['from'][0]
+        #         to_currency = query_params['to'][0]
+        #         amount = query_params['amount'][0]
 
-            except Exception as e:
-                self.send_response(500)
-                self.send_header('Content-type', 'application/json')
-                self.end_headers()
-                self.wfile.write(json.dumps({"error": str(e)}).encode('utf-8'))
+
+
+        #     except Exception as e:
+        #         self.send_response(500)
+        #         self.send_header('Content-type', 'application/json')
+        #         self.end_headers()
+        #         self.wfile.write(json.dumps({"error": str(e)}).encode('utf-8'))
 
 
     def do_POST(self):
@@ -100,18 +102,19 @@ class HTTPRequestHandler(BaseHTTPRequestHandler):
                 data_message = json.loads(new_currency).get("data")
                 if data_message == 'currency already exist':
                     self.send_response(409)
-                elif data_message.startswith('indicate the'):
+                elif type(data_message) is str and data_message.startswith('indicate the'):
                     self.send_response(400)
                 else:
                     self.send_response(200)
                 self.send_header('Content-type', 'application/json')
                 self.end_headers()
-                self.wfile.write(new_currency.encode('utf-8'))
+                return self.wfile.write(new_currency.encode('utf-8'))
             except Exception as e:
                 self.send_response(500)
                 self.send_header('Content-type', 'application/json')
                 self.end_headers()
                 self.wfile.write(json.dumps({"error": str(e)}).encode('utf-8'))
+
 
         if (self.path == '/api/exchange-rates'):
             try:
