@@ -118,3 +118,10 @@ class ExchangeRatesService:
             pair["amount"] = int(amount)
             pair["convertedAmount"] = pair["amount"] * pair["rate"]
             return pair
+        
+        reverse_pair = ExchangeRatesService().get_by_slug(base=to_currency, target=from_currency)
+        if reverse_pair:
+            reverse_pair["rate"] = 1 / float(reverse_pair["rate"])
+            reverse_pair["amount"] = int(amount)
+            reverse_pair["convertedAmount"] = reverse_pair["amount"] * reverse_pair["rate"]
+            return reverse_pair
