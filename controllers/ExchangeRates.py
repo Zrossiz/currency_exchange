@@ -59,3 +59,5 @@ class ExchangeRatesController:
 
     def exchange(self, from_currency, to_currency, amount):
         result = ExchangeRatesService().exchange(from_currency, to_currency, amount)
+        response_json = json.dumps(result)
+        return response_json

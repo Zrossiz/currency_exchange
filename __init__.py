@@ -73,22 +73,27 @@ class HTTPRequestHandler(BaseHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write(json.dumps({"error": str(e)}).encode('utf-8'))
 
-        # if (self.path.startswith('/api/exchange')):
-        #     try:
-        #         parsed_url = urlparse(self.path)
-        #         query_params = parse_qs(parsed_url.query)
+        if (self.path.startswith('/api/exchange')):
+            try:
+                parsed_url = urlparse(self.path)
+                query_params = parse_qs(parsed_url.query)
 
-        #         from_currency = query_params['from'][0]
-        #         to_currency = query_params['to'][0]
-        #         amount = query_params['amount'][0]
+                from_currency = query_params['from'][0]
+                to_currency = query_params['to'][0]
+                amount = query_params['amount'][0]
+                result = ExchangeRatesController().exchange(from_currency, to_currency, amount)
+                print(result)
+                self.send_response(200)
+                self.send_header('Content-type', 'application/json')
+                self.end_headers()
+                self.wfile.write(result.encode('utf-8'))
 
 
-
-        #     except Exception as e:
-        #         self.send_response(500)
-        #         self.send_header('Content-type', 'application/json')
-        #         self.end_headers()
-        #         self.wfile.write(json.dumps({"error": str(e)}).encode('utf-8'))
+            except Exception as e:
+                self.send_response(500)
+                self.send_header('Content-type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({"error": str(e)}).encode('utf-8'))
 
 
     def do_POST(self):

@@ -70,25 +70,25 @@ class ExchangeRatesService:
         return currency_sql
     
     def get_by_slug(self, base, target):
-        pair = ExchangeRatesModel().get_by_slug(base, target)[0]
-        formatted_pair = {
-            "id": pair[0],
-            "baseCurrency": {
-                "id": pair[1],
-                "name": pair[3],
-                "code": pair[2],
-                "sign": pair[4],
-            },
-            "targetCurrency": {
-                "id": pair[5],
-                "name": pair[7],
-                "code": pair[6],
-                "sign": pair[8],
-            },
-            "rate": float(pair[9]),
-        }
-
-        return formatted_pair
+        pair = ExchangeRatesModel().get_by_slug(base, target)
+        if len(pair) >= 1:
+            formatted_pair = {
+                "id": pair[0][0],
+                "baseCurrency": {
+                    "id": pair[0][1],
+                    "name": pair[0][3],
+                    "code": pair[0][2],
+                    "sign": pair[0][4],
+                },
+                "targetCurrency": {
+                    "id": pair[0][5],
+                    "name": pair[0][7],
+                    "code": pair[0][6],
+                    "sign": pair[0][8],
+                },
+                "rate": float(pair[0][9]),
+            }
+            return formatted_pair
     
     def update_by_slug(self, base, target, rate):
         pair = ExchangeRatesModel().update_by_slug(base, target, rate)[0]
@@ -113,4 +113,8 @@ class ExchangeRatesService:
         return formatted_pair
     
     def exchange(self, from_currency, to_currency, amount):
-        pass
+        pair = ExchangeRatesService().get_by_slug(base=from_currency, target=to_currency)
+        if pair:
+            pair["amount"] = int(amount)
+            pair["convertedAmount"] = pair["amount"] * pair["rate"]
+            return pair
